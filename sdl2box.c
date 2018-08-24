@@ -28,12 +28,12 @@ int main (int argc, char** argv)
     // blue rect
     SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
     SDL_RenderDrawRect( renderer, &r );
-
-    // green cross
+    // green vertical
     SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
     SDL_RenderDrawLine(renderer, 320, 40, 320, 440);
+    // red horizontal
+    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
     SDL_RenderDrawLine(renderer, 40, 240, 600, 240);
-
     // go..
     SDL_RenderPresent(renderer);
 
