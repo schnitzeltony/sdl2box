@@ -25,7 +25,7 @@ int main (int argc, char** argv)
     r.h = 440;
 
     struct timespec start;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
+    clock_gettime(CLOCK_REALTIME, &start);
 
     for (int i=0; i<RUNS; i++)
 	{
@@ -46,7 +46,7 @@ int main (int argc, char** argv)
     }
 
     struct timespec end;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
+    clock_gettime(CLOCK_REALTIME, &end);
     int t_ms = (end.tv_sec - start.tv_sec) * 1000 +
                (end.tv_nsec - start.tv_nsec) / 1000000;
     printf("Took %ims\n", t_ms);
