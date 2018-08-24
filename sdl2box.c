@@ -1,4 +1,7 @@
 #include <SDL2/SDL.h>
+#include <time.h>
+
+#define RUNS 10000
 
 int main (int argc, char** argv)
 {
@@ -15,30 +18,40 @@ int main (int argc, char** argv)
     SDL_Renderer* renderer = NULL;
     renderer =  SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED);
 
-    // background black
-    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-    SDL_RenderClear( renderer );
-
     SDL_Rect r;
     r.x = 20;
     r.y = 20;
     r.w = 600;
     r.h = 440;
 
-    // blue rect
-    SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-    SDL_RenderDrawRect( renderer, &r );
-    // green vertical
-    SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
-    SDL_RenderDrawLine(renderer, 320, 40, 320, 440);
-    // red horizontal
-    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
-    SDL_RenderDrawLine(renderer, 40, 240, 600, 240);
-    // go..
-    SDL_RenderPresent(renderer);
+    struct timespec start;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
 
-    // Wait for 10 sec
-    SDL_Delay( 10000 );
+    for (int i=0; i<RUNS; i++)
+	{
+        // background black
+        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+        SDL_RenderClear( renderer );
+        // blue rect
+        SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
+        SDL_RenderDrawRect( renderer, &r );
+        // green vertical
+        SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
+        SDL_RenderDrawLine(renderer, 320, 40, 320, 440);
+        // red horizontal
+        SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+        SDL_RenderDrawLine(renderer, 40, 240, 600, 240);
+        // go..
+        SDL_RenderPresent(renderer);
+    }
+
+    struct timespec end;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
+    int t_ms = (end.tv_sec - start.tv_sec) * 1000 +
+               (end.tv_nsec - start.tv_nsec) / 1000000;
+    printf("Took %ims\n", t_ms);
+    double timePerRunMs = ((double)t_ms) / ((double)RUNS);
+    printf("One frame took %.3fms\n", timePerRunMs);
 
     SDL_DestroyWindow(window);
     SDL_Quit();
