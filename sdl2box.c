@@ -27,11 +27,13 @@ int main (int argc, char** argv)
     struct timespec start;
     clock_gettime(CLOCK_REALTIME, &start);
 
+	// background black
+	SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+	SDL_RenderClear( renderer );
+
+	// lopp for benchmark
     for (int i=0; i<RUNS; i++)
 	{
-        // background black
-        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-        SDL_RenderClear( renderer );
         // blue rect
         SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
         SDL_RenderDrawRect( renderer, &r );
@@ -41,9 +43,9 @@ int main (int argc, char** argv)
         // red horizontal
         SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
         SDL_RenderDrawLine(renderer, 40, 240, 600, 240);
-        // go..
-        SDL_RenderPresent(renderer);
     }
+	// go..
+	SDL_RenderPresent(renderer);
 
     struct timespec end;
     clock_gettime(CLOCK_REALTIME, &end);
@@ -52,6 +54,9 @@ int main (int argc, char** argv)
     printf("Took %ims\n", t_ms);
     double timePerRunMs = ((double)t_ms) / ((double)RUNS);
     printf("One frame took %.3fms\n", timePerRunMs);
+
+    // Wait for 5 sec
+    SDL_Delay( 5000 );
 
     SDL_DestroyWindow(window);
     SDL_Quit();
